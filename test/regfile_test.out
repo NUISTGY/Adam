@@ -1,0 +1,148 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.6 " "(v0_9_6)";
+:vpi_time_precision - 12;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0111DC50 .scope module, "regfile_test" "regfile_test" 2 5;
+ .timescale -9 -12;
+P_0111E4F4 .param/real "STEP" 2 16, Cr<m6400000000000000gfc8>; value=100.000
+v01119DD8_0 .var "addr", 4 0;
+v01119E30_0 .var "clk", 0 0;
+v01119E88_0 .var "d_in", 31 0;
+v00F8F8B0_0 .net "d_out", 31 0, L_0111EC68; 1 drivers
+v00F8F908_0 .var/i "i", 31 0;
+v00F8F960_0 .var "reset_", 0 0;
+v00F900C0_0 .var "we_", 0 0;
+S_0111D5F0 .scope module, "regfile" "regfile" 2 22, 3 3, S_0111DC50;
+ .timescale -9 -12;
+L_0111EC68 .functor BUFZ 32, L_00F8FFB8, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0111A050_0 .net *"_s0", 31 0, L_00F8FFB8; 1 drivers
+v0111B7E0_0 .net "addr", 4 0, v01119DD8_0; 1 drivers
+v01113130_0 .net "clk", 0 0, v01119E30_0; 1 drivers
+v01113188_0 .net "d_in", 31 0, v01119E88_0; 1 drivers
+v011131E0_0 .alias "d_out", 31 0, v00F8F8B0_0;
+v00F933B0 .array "ff", 0 31, 31 0;
+v00F93408_0 .var/i "i", 31 0;
+v00F93460_0 .net "reset_", 0 0, v00F8F960_0; 1 drivers
+v01119D80_0 .net "we_", 0 0, v00F900C0_0; 1 drivers
+E_0111E250/0 .event negedge, v00F93460_0;
+E_0111E250/1 .event posedge, v01113130_0;
+E_0111E250 .event/or E_0111E250/0, E_0111E250/1;
+L_00F8FFB8 .array/port v00F933B0, v01119DD8_0;
+    .scope S_0111D5F0;
+T_0 ;
+    %wait E_0111E250;
+    %load/v 8, v00F93460_0, 1;
+    %cmpi/u 8, 0, 1;
+    %jmp/0xz  T_0.0, 4;
+    %set/v v00F93408_0, 0, 32;
+T_0.2 ;
+    %load/v 8, v00F93408_0, 32;
+   %cmpi/s 8, 32, 32;
+    %jmp/0xz T_0.3, 5;
+    %ix/getv/s 3, v00F93408_0;
+    %jmp/1 t_0, 4;
+    %ix/load 0, 32, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v00F933B0, 1000, 0;
+t_0 ;
+    %ix/load 0, 1, 0;
+    %load/vp0/s 8, v00F93408_0, 32;
+    %set/v v00F93408_0, 8, 32;
+    %jmp T_0.2;
+T_0.3 ;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v01119D80_0, 1;
+    %cmpi/u 8, 0, 1;
+    %jmp/0xz  T_0.4, 4;
+    %load/v 8, v01113188_0, 32;
+    %ix/getv 3, v0111B7E0_0;
+    %jmp/1 t_1, 4;
+    %ix/load 0, 32, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v00F933B0, 1000, 8;
+t_1 ;
+T_0.4 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0111DC50;
+T_1 ;
+    %delay 50000, 0;
+    %load/v 8, v01119E30_0, 1;
+    %inv 8, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v01119E30_0, 0, 8;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_0111DC50;
+T_2 ;
+    %delay 0, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v01119E30_0, 0, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00F8F960_0, 0, 0;
+    %ix/load 0, 5, 0;
+    %assign/v0 v01119DD8_0, 0, 0;
+    %ix/load 0, 32, 0;
+    %assign/v0 v01119E88_0, 0, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00F900C0_0, 0, 1;
+    %delay 75000, 0;
+    %delay 100000, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00F8F960_0, 0, 1;
+    %delay 100000, 0;
+    %set/v v00F8F908_0, 0, 32;
+T_2.0 ;
+    %load/v 8, v00F8F908_0, 32;
+   %cmpi/s 8, 32, 32;
+    %jmp/0xz T_2.1, 5;
+    %delay 100000, 0;
+    %load/v 8, v00F8F908_0, 32;
+    %ix/load 0, 5, 0;
+    %assign/v0 v01119DD8_0, 0, 8;
+    %load/v 8, v00F8F908_0, 32;
+    %ix/load 0, 32, 0;
+    %assign/v0 v01119E88_0, 0, 8;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00F900C0_0, 0, 0;
+    %delay 100000, 0;
+    %ix/load 0, 5, 0;
+    %assign/v0 v01119DD8_0, 0, 0;
+    %ix/load 0, 32, 0;
+    %assign/v0 v01119E88_0, 0, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00F900C0_0, 0, 1;
+    %load/v 8, v00F8F8B0_0, 32;
+    %load/v 40, v00F8F908_0, 32;
+    %cmp/u 8, 40, 32;
+    %jmp/0xz  T_2.2, 4;
+    %vpi_call 2 56 "$display", $time, "ff[%d] Read/Write Check OK !", v00F8F908_0;
+    %jmp T_2.3;
+T_2.2 ;
+    %vpi_call 2 58 "$display", $time, "ff[%d] Read/Write Check NG !", v00F8F908_0;
+T_2.3 ;
+    %ix/load 0, 1, 0;
+    %load/vp0/s 8, v00F8F908_0, 32;
+    %set/v v00F8F908_0, 8, 32;
+    %jmp T_2.0;
+T_2.1 ;
+    %delay 100000, 0;
+    %vpi_call 2 64 "$finish";
+    %end;
+    .thread T_2;
+    .scope S_0111DC50;
+T_3 ;
+    %vpi_call 2 69 "$dumpfile", "regfile.vcd";
+    %vpi_call 2 70 "$dumpvars", 1'sb0, S_0111D5F0;
+    %end;
+    .thread T_3;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "regfile_test.v";
+    "regfile.v";
